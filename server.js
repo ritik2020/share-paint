@@ -36,7 +36,10 @@ io.on('connection', (socket) => {
   });
   socket.on('text',(d)=>{
     socket.broadcast.emit('text',d);
-  })
+  });
+  socket.on("algo",(d)=>{
+    io.emit("algo",d);
+  });
 });
 
 http.listen(PORT, () => {

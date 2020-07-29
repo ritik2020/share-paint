@@ -4,7 +4,6 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-
 //formatting variables
 var lineWidth = "6";
 var lineColor = "red";
@@ -19,6 +18,8 @@ var eraser = document.getElementById("eraser");
 //utility variables
 var stack = [];
 
+//textarea
+var algo = document.getElementById("algo");
 
 // UI Variables
 var current_tool_ui = document.getElementById("current_tool");
@@ -61,7 +62,6 @@ canvas.addEventListener('mousedown',(e)=>{
                 tempx+=w;
             }  
         }
-
         socket.emit('array',{x,y,arrSize,w,h});
     }
 
@@ -75,6 +75,8 @@ canvas.addEventListener('mousedown',(e)=>{
 
     socket.emit('mousedown',{x,y});
 });
+
+
 
 
 
@@ -212,3 +214,13 @@ socket.on('keydown',(key)=>{
 
 
 
+algo.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape"){
+        socket.emit("algo",algo.value);
+    }
+});
+
+
+socket.on("algo",(val)=>{
+    algo.value = val;
+});
