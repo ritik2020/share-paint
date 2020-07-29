@@ -20,6 +20,10 @@ var eraser = document.getElementById("eraser");
 var stack = [];
 
 
+// UI Variables
+var current_tool_ui = document.getElementById("current_tool");
+current_tool_ui.innerHTML = `Curren Tool: ${currentTool}`;
+
 // Canvas events
 canvas.addEventListener('mousedown',(e)=>{
     var x = e.clientX;
@@ -110,7 +114,6 @@ document.addEventListener('keydown',(e)=>{
 
 
 // Socket events 
-
 socket.on('mousedown',(cords)=>{
     console.log("it fired");
     isDrawing = true;
@@ -187,24 +190,23 @@ socket.on('keydown',(key)=>{
     // eraser.style.display = "none";
     if(key === "c"){
         ctx.clearRect(canvas.getBoundingClientRect().x,canvas.getBoundingClientRect().y,canvas.width,canvas.height);
-        console.log("cleared");
     }
     if(key === "e"){
         currentTool = "eraser";
         // eraser.style.display = "block";
-        console.log(currentTool);
+        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
     if(key === "p"){
         currentTool = "pencil";
-        console.log(currentTool);
+        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
     if(key === "a"){
         currentTool = "array";
-        console.log(currentTool);
+        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
     if(key==="t"){
         currentTool = "text";
-        console.log(currentTool);
+        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
 });
 

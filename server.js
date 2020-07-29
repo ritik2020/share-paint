@@ -14,22 +14,24 @@ app.get('/graph', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  console.log(io.engine.clientsCount);
+
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
+    console.log(io.engine.clientsCount);
   });
+
   socket.on('mousedown', (cords) => {
-      console.log(cords);
     socket.broadcast.emit('mousedown', cords);
   });
   socket.on('mouseup',(d)=>{
       socket.broadcast.emit('mouseup',d);
   });
   socket.on('keydown',(key)=>{
-      console.log(key);
       io.emit('keydown',key);
   });
   socket.on('array',(d)=>{
-    console.log(d);
     socket.broadcast.emit('array',d);
   });
   socket.on('text',(d)=>{
