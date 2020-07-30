@@ -1,12 +1,32 @@
-#current_tool {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px;
-    border: 1px solid black;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+#color-palette{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+}
+
+#color-palette .color {
+width: 30px;
+height: 30px;
+margin: 5px;
+}
+
+#canvas {
+    border: 2px solid red;
+}
 
 #algo {
     width: 100%;

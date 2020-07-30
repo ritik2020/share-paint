@@ -40,6 +40,9 @@ io.on('connection', (socket) => {
   socket.on("algo",(d)=>{
     io.emit("algo",d);
   });
+  socket.on("changeColor", (color)=>{
+    socket.broadcast.emit('changeColor', color);
+  });
 });
 
 http.listen(PORT, () => {

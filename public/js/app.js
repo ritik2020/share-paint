@@ -1,7 +1,7 @@
 var socket = io();
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
+canvas.width = 1200;
 canvas.height = window.innerHeight;
 
 //formatting variables
@@ -21,16 +21,31 @@ var stack = [];
 //textarea
 var algo = document.getElementById("algo");
 
-// UI Variables
-var current_tool_ui = document.getElementById("current_tool");
-current_tool_ui.innerHTML = `Curren Tool: ${currentTool}`;
+
+
+//color palette
+var colorPalette = document.getElementById("color-palette");
+for(let i=0; i<30; i++){
+let temp = document.createElement("div");
+temp.classList.add('color');
+temp.style.backgroundColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+temp.addEventListener("click",()=>{
+lineColor = temp.style.backgroundColor;
+fillColor = temp.style.backgroundColor;
+socket.emit('changeColor', lineColor);
+});
+colorPalette.appendChild(temp);
+}
+
 
 // Canvas events
 canvas.addEventListener('mousedown',(e)=>{
-    var x = e.clientX;
-    var y = e.clientY;
+    var canvasRect = canvas.getBoundingClientRect();
+    var cx = canvasRect.x;
+    var cy = canvasRect.y;
+    var x = e.clientX - cx;
+    var y = e.clientY - cy;
     isDrawing = true;
-    // console.log(x,y);
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = lineColor;
     ctx.fillStyle = fillColor;
@@ -81,8 +96,11 @@ canvas.addEventListener('mousedown',(e)=>{
 
 
 canvas.addEventListener('mousemove',(e)=>{
-    var x = e.clientX;
-    var y = e.clientY;
+    var canvasRect = canvas.getBoundingClientRect();
+    var cx = canvasRect.x;
+    var cy = canvasRect.y;
+    var x = e.clientX-cx;
+    var y = e.clientY-cy;
     if(isDrawing){
         if(currentTool === "pencil"){
                 ctx.lineTo(x,y);
@@ -191,24 +209,20 @@ socket.on('mouseup',(d)=>{
 socket.on('keydown',(key)=>{
     // eraser.style.display = "none";
     if(key === "c"){
-        ctx.clearRect(canvas.getBoundingClientRect().x,canvas.getBoundingClientRect().y,canvas.width,canvas.height);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
     }
     if(key === "e"){
         currentTool = "eraser";
         // eraser.style.display = "block";
-        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
     if(key === "p"){
         currentTool = "pencil";
-        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
     if(key === "a"){
         currentTool = "array";
-        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
     if(key==="t"){
         currentTool = "text";
-        current_tool_ui.innerHTML = `Current Tool : ${currentTool}`;
     }
 });
 
@@ -223,4 +237,10 @@ algo.addEventListener("keydown",(e)=>{
 
 socket.on("algo",(val)=>{
     algo.value = val;
+});
+
+
+socket.on("changeColor",(color)=>{
+    lineColor = color;
+    fillColor = color;
 });
