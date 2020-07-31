@@ -18,8 +18,11 @@ app.get('/graph', (req, res) => {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
+  io.emit('update connection count',io.engine.clientsCount);
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
+    io.emit('update connection count',io.engine.clientsCount);
   });
 
   socket.on("changeColor", (color)=>{

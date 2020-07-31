@@ -267,7 +267,9 @@ socket.on('mouseup',(d)=>{
 });
 
 
-
+socket.on('update connection count',(count)=>{
+    document.getElementById("total_connections").innerHTML = count;
+});
 
 
 
