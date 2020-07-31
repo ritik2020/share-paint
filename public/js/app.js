@@ -1,8 +1,12 @@
 var socket = io();
+
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = window.innerHeight;
+
+
 
 //formatting variables
 var lineWidth = "6";
@@ -12,29 +16,63 @@ var fillColor = "red";
 //functionalities variables
 var isDrawing = false;
 var currentTool = "pencil";
-var eraser = document.getElementById("eraser");
 
 
 //utility variables
 var stack = [];
 
 //textarea
-var algo = document.getElementById("algo");
+var textArea = document.getElementById("textArea");
 
 
+function changeColor(color){
+    lineColor = color;
+    fillColor = color;
+    socket.emit('changeColor',color);
+}
 
-//color palette
-var colorPalette = document.getElementById("color-palette");
-for(let i=0; i<30; i++){
-let temp = document.createElement("div");
-temp.classList.add('color');
-temp.style.backgroundColor = "#" + Math.floor(Math.random()*16777215).toString(16);
-temp.addEventListener("click",()=>{
-lineColor = temp.style.backgroundColor;
-fillColor = temp.style.backgroundColor;
-socket.emit('changeColor', lineColor);
-});
-colorPalette.appendChild(temp);
+function changeTool(tool){
+    currentTool = tool;
+    socket.emit('changeTool',tool);
+}
+
+function clearCanvas(){
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    socket.emit('clearCanvas');
+}
+
+function addActiveClassToAColor(ele){
+    var allElements = document.getElementsByClassName("color");
+    var currentActiveElement;
+    var targetElement;
+    for(let i=0 ; i<allElements.length; i++){
+        if(allElements[i].classList.contains("color-active")){
+            currentActiveElement = i;
+            allElements[i].classList.remove("color-active");
+        }
+        if(allElements[i]===ele){
+            targetElement = i;
+            allElements[i].classList.add("color-active");
+        }
+    }
+    socket.emit('makeColorActive',{currentActiveElement, targetElement});
+}
+
+function addActiveClassToATool(ele){
+    var allTools = document.getElementsByClassName("tool");
+    var currentTool;
+    var targetTool;
+    for(let i=0; i<allTools.length; i++){
+        if(allTools[i].classList.contains("tool-active")){
+            currentTool = i;
+            allTools[i].classList.remove("tool-active");
+        }
+        if(allTools[i]===ele){
+            targetTool = i;
+            allTools[i].classList.add("tool-active");
+        }
+    }
+    socket.emit('makeToolActive',{currentTool,targetTool});
 }
 
 
@@ -55,8 +93,6 @@ canvas.addEventListener('mousedown',(e)=>{
         ctx.moveTo(x,y);
     }
     if(currentTool === "eraser"){
-        eraser.style.top = `${y}px`;
-        eraser.style.left = `${x}px`;
         ctx.beginPath();
         ctx.fillStyle = "white";
         ctx.fillRect(x,y,10,10);
@@ -92,9 +128,6 @@ canvas.addEventListener('mousedown',(e)=>{
 });
 
 
-
-
-
 canvas.addEventListener('mousemove',(e)=>{
     var canvasRect = canvas.getBoundingClientRect();
     var cx = canvasRect.x;
@@ -109,8 +142,6 @@ canvas.addEventListener('mousemove',(e)=>{
         }
         
         if(currentTool === "eraser"){
-                // eraser.style.top = `${y}px`;
-                //  eraser.style.left = `${x}px`;
                  ctx.fillStyle = "white";
                  ctx.fillRect(x,y,30,30);
                  stack.push({x,y}); //pushing the moing coordinates into stack
@@ -120,22 +151,53 @@ canvas.addEventListener('mousemove',(e)=>{
 
 
 canvas.addEventListener('mouseup',(e)=>{
-    console.log("mouse up fired")
     isDrawing = false;
     socket.emit('mouseup',stack);
     stack = [];
 });
 
-document.addEventListener('keydown',(e)=>{
-    socket.emit('keydown',e.key);
+
+//textarea events
+textArea.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape"){
+        socket.emit("textChange",textArea.value);
+    }
 });
 
 
-
-
 // Socket events 
+socket.on("changeTool",(tool)=>{
+    currentTool = tool;
+    console.log(currentTool);
+});
+
+socket.on("clearCanvas",()=>{
+ctx.clearRect(0,0,canvas.width,canvas.height);
+});
+
+socket.on("changeColor",(color)=>{
+    lineColor = color;
+    fillColor = color;
+});
+
+socket.on('makeColorActive',(d)=>{
+    var allElements = document.getElementsByClassName("color");
+    allElements[d.currentActiveElement].classList.remove("color-active");
+    allElements[d.targetElement].classList.add("color-active");
+});
+
+socket.on('makeToolActive',(d)=>{
+    console.log(d);
+    var allTools = document.getElementsByClassName("tool");
+    allTools[d.currentTool].classList.remove("tool-active");
+    allTools[d.targetTool].classList.add("tool-active");
+});
+
+socket.on("textChange",(val)=>{
+    textArea.value = val;
+});
+
 socket.on('mousedown',(cords)=>{
-    console.log("it fired");
     isDrawing = true;
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = lineColor;
@@ -158,19 +220,17 @@ socket.on('array',(d)=>{
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = lineColor;
     ctx.fillStyle = fillColor;
-ctx.beginPath();
-for(let i=1; i<=d.arrSize; i++){
-    if(i===1){
-        ctx.strokeRect(d.x,d.y,d.w,d.h);
-        d.x+=d.w;
-        console.log("run",d.x);
+    ctx.beginPath();
+    for(let i=1; i<=d.arrSize; i++){
+        if(i===1){
+            ctx.strokeRect(d.x,d.y,d.w,d.h);
+            d.x+=d.w;
+        }
+        else {
+            ctx.strokeRect(d.x,d.y,d.w,d.h);
+            d.x+=d.w;
+        }
     }
-    else {
-        ctx.strokeRect(d.x,d.y,d.w,d.h);
-        d.x+=d.w;
-        console.log("run",d.x);
-    }
-}
 });
 
 socket.on('text',(d)=>{
@@ -196,8 +256,6 @@ socket.on('mouseup',(d)=>{
     
     if(currentTool === "eraser"){
         for(let i=0; i<d.length; i++){
-            // eraser.style.top = `${d[i].y}px`;
-            //  eraser.style.left = `${d[i].x}px`;
              ctx.fillStyle = "white";
              ctx.fillRect(d[i].x,d[i].y,30,30);
         }
@@ -206,41 +264,9 @@ socket.on('mouseup',(d)=>{
     }
 });
 
-socket.on('keydown',(key)=>{
-    // eraser.style.display = "none";
-    if(key === "c"){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-    }
-    if(key === "e"){
-        currentTool = "eraser";
-        // eraser.style.display = "block";
-    }
-    if(key === "p"){
-        currentTool = "pencil";
-    }
-    if(key === "a"){
-        currentTool = "array";
-    }
-    if(key==="t"){
-        currentTool = "text";
-    }
-});
 
 
 
-algo.addEventListener("keydown",(e)=>{
-    if(e.key==="Escape"){
-        socket.emit("algo",algo.value);
-    }
-});
 
 
-socket.on("algo",(val)=>{
-    algo.value = val;
-});
 
-
-socket.on("changeColor",(color)=>{
-    lineColor = color;
-    fillColor = color;
-});
