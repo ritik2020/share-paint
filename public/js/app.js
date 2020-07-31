@@ -37,8 +37,10 @@ function changeTool(tool){
 }
 
 function clearCanvas(){
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    socket.emit('clearCanvas');
+    if(confirm("Do you really want to clear the canvas??")){
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        socket.emit('clearCanvas');
+    }   
 }
 
 function addActiveClassToAColor(ele){
