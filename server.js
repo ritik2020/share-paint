@@ -59,8 +59,9 @@ io.on('connection', (socket) => {
   socket.on('text',(d)=>{
     socket.broadcast.emit('text',d);
   });
+
   socket.on("textChange",(d)=>{
-    io.emit("textChange",d);
+    socket.broadcast.emit("textChange",d);
   });
 });
 
