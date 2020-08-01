@@ -160,10 +160,14 @@ canvas.addEventListener('mouseup',(e)=>{
 
 
 //textarea events
-textArea.addEventListener("keydown",(e)=>{
-    if(e.key==="Escape"){
-        socket.emit("textChange",textArea.value);
-    }
+// textArea.addEventListener("keydown",(e)=>{
+//     if(e.key==="Escape"){
+//         socket.emit("textChange",textArea.value);
+//     }
+// });
+
+textArea.addEventListener("input",()=>{
+socket.emit("textChange",textArea.value);
 });
 
 
