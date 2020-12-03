@@ -24,7 +24,7 @@ var stack = [];
 //textarea
 var textArea = document.getElementById("textArea");
 
-
+ 
 function changeColor(color){
     lineColor = color;
     fillColor = color;
