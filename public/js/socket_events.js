@@ -32,9 +32,6 @@ socket.on("textChange",(val)=>{
 
 socket.on('mousedown',(cords)=>{
     isDrawing = true;
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = lineColor;
-    ctx.fillStyle = fillColor;
     console.log(cords);
     if(currentTool === "pencil"){
         ctx.beginPath();
@@ -82,6 +79,9 @@ socket.on('mouseup',(d)=>{
         for(let i=0; i<d.length; i++){
             if(i===0){
                 ctx.beginPath();
+                ctx.lineWidth = lineWidth;
+                ctx.strokeStyle = lineColor;
+                ctx.fillStyle = fillColor;
                 ctx.moveTo(d[i].x,d[i].y);
             }
             ctx.lineTo(d[i].x,d[i].y);

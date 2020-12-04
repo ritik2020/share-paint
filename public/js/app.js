@@ -86,12 +86,13 @@ canvas.addEventListener('mousedown',(e)=>{
     var x = e.clientX - cx;
     var y = e.clientY - cy;
     isDrawing = true;
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = lineColor;
-    ctx.fillStyle = fillColor;
+    
 
     if(currentTool === "pencil"){
         ctx.beginPath();
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = lineColor;
+        ctx.fillStyle = fillColor;
         ctx.moveTo(x,y);
         stack.push({x,y});
     }
