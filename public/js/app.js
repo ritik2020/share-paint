@@ -156,10 +156,10 @@ canvas.addEventListener('mousemove',(e)=>{
 
 
 canvas.addEventListener('mouseup',(e)=>{
+    socket.emit('unblockCanvas');
     isDrawing = false;
     console.log(stack);
     socket.emit('mouseup',{stack,lineColor,fillColor,currentTool});
-    socket.emit('unblockCanvas');
     stack = [];
 });
 
