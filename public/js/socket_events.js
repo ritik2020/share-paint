@@ -7,11 +7,13 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 socket.on('blockCanvas', ()=>{
     isCanvasBlocked = true;
     document.getElementById('canvas-status').innerHTML = "Canvas blocked";
+    document.getElementById("canvas").style.display = "none";
 });
 
 socket.on('unblockCanvas',()=>{
     isCanvasBlocked = false;
     document.getElementById('canvas-status').innerHTML = "Canvas unblocked";
+    document.getElementById("canvas").style.display = "block";
 });
 
 socket.on("textChange",(val)=>{
