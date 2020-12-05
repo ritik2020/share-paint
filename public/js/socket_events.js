@@ -52,6 +52,7 @@ socket.on('mouseup',(d)=>{
             
         }
         isDrawing = false;
+        stack = [];
     }
     
     if(d.currentTool === "eraser"){
