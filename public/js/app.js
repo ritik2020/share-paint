@@ -28,12 +28,10 @@ var textArea = document.getElementById("textArea");
 function changeColor(color){
     lineColor = color;
     fillColor = color;
-    socket.emit('changeColor',color);
 }
 
 function changeTool(tool){
     currentTool = tool;
-    socket.emit('changeTool',tool);
 }
 
 function clearCanvas(){
@@ -57,7 +55,6 @@ function addActiveClassToAColor(ele){
             allElements[i].classList.add("color-active");
         }
     }
-    socket.emit('makeColorActive',{currentActiveElement, targetElement});
 }
 
 function addActiveClassToATool(ele){
@@ -74,7 +71,6 @@ function addActiveClassToATool(ele){
             allTools[i].classList.add("tool-active");
         }
     }
-    socket.emit('makeToolActive',{currentTool,targetTool});
 }
 
 
@@ -92,7 +88,6 @@ canvas.addEventListener('mousedown',(e)=>{
         ctx.beginPath();
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = lineColor;
-        ctx.fillStyle = fillColor;
         ctx.moveTo(x,y);
         stack.push({x,y});
     }
@@ -103,6 +98,8 @@ canvas.addEventListener('mousedown',(e)=>{
     }
     if(currentTool==="array"){
         ctx.beginPath();
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = lineColor;
         let tempx = x;
         let arrSize = Number(prompt("enter array size"));
         let w = Number(prompt("enter width"));
@@ -117,7 +114,7 @@ canvas.addEventListener('mousedown',(e)=>{
                 tempx+=w;
             }  
         }
-        socket.emit('array',{x,y,arrSize,w,h});
+        socket.emit('array',{x,y,arrSize,w,h,lineWidth,lineColor});
     }
 
     if(currentTool==="text"){
@@ -128,7 +125,6 @@ canvas.addEventListener('mousedown',(e)=>{
         socket.emit('text',{text,x,y});
     }
 
-    // socket.emit('mousedown',{x,y});
 });
 
 
@@ -156,7 +152,8 @@ canvas.addEventListener('mousemove',(e)=>{
 
 canvas.addEventListener('mouseup',(e)=>{
     isDrawing = false;
-    socket.emit('mouseup',stack);
+    socket.emit('mouseup',{stack,lineColor,fillColor,currentTool});
+    console.log({stack,lineColor,fillColor,currentTool});
     stack = [];
 });
 

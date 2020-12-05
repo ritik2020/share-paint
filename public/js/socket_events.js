@@ -1,55 +1,16 @@
 // Socket events 
-socket.on("changeTool",(tool)=>{
-    currentTool = tool;
-    console.log(currentTool);
-});
-
 socket.on("clearCanvas",()=>{
 ctx.clearRect(0,0,canvas.width,canvas.height);
 });
 
-socket.on("changeColor",(color)=>{
-    lineColor = color;
-    fillColor = color;
-});
-
-socket.on('makeColorActive',(d)=>{
-    var allElements = document.getElementsByClassName("color");
-    allElements[d.currentActiveElement].classList.remove("color-active");
-    allElements[d.targetElement].classList.add("color-active");
-});
-
-socket.on('makeToolActive',(d)=>{
-    console.log(d);
-    var allTools = document.getElementsByClassName("tool");
-    allTools[d.currentTool].classList.remove("tool-active");
-    allTools[d.targetTool].classList.add("tool-active");
-});
 
 socket.on("textChange",(val)=>{
     textArea.value = val;
 });
 
-socket.on('mousedown',(cords)=>{
-    isDrawing = true;
-    console.log(cords);
-    if(currentTool === "pencil"){
-        ctx.beginPath();
-        ctx.moveTo(cords.x,cords.y);
-    }
-    if(currentTool === "eraser"){
-        eraser.style.top = `${cords.y}px`;
-        eraser.style.left = `${cords.x}px`;
-        ctx.beginPath();
-        ctx.fillStyle = "white";
-        ctx.fillRect(cords.x,cords.y,10,10);
-    }
-});
-
 socket.on('array',(d)=>{
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = lineColor;
-    ctx.fillStyle = fillColor;
+    ctx.lineWidth = d.lineWidth;
+    ctx.strokeStyle = d.lineColor;
     ctx.beginPath();
     for(let i=1; i<=d.arrSize; i++){
         if(i===1){
@@ -74,27 +35,31 @@ socket.on('text',(d)=>{
 
 socket.on('mouseup',(d)=>{
     console.log(d);
-    if(d.length===0){return;}
-    if(currentTool === "pencil"){
-        for(let i=0; i<d.length; i++){
+    if(d.stack.length===0){return;}
+    if(d.currentTool === "pencil"){
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = d.lineColor;
+        ctx.fillStyle = d.fillColor;
+        for(let i=0; i<d.stack.length; i++){
             if(i===0){
                 ctx.beginPath();
-                ctx.lineWidth = lineWidth;
-                ctx.strokeStyle = lineColor;
-                ctx.fillStyle = fillColor;
-                ctx.moveTo(d[i].x,d[i].y);
+                ctx.moveTo(d.stack[i].x,d.stack[i].y);
             }
-            ctx.lineTo(d[i].x,d[i].y);
-            ctx.stroke();
+            else {
+                ctx.lineTo(d.stack[i].x,d.stack[i].y);
+                ctx.stroke();
+            }
+            
         }
         isDrawing = false;
         stack = [];
     }
     
-    if(currentTool === "eraser"){
-        for(let i=0; i<d.length; i++){
+    if(d.currentTool === "eraser"){
+            ctx.beginPath();
+        for(let i=0; i<d.stack.length; i++){
              ctx.fillStyle = "white";
-             ctx.fillRect(d[i].x,d[i].y,30,30);
+             ctx.fillRect(d.stack[i].x,d.stack[i].y,30,30);
         }
         isDrawing = false;
         stack = [];
