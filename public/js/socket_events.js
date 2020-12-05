@@ -51,8 +51,6 @@ socket.on('mouseup',(d)=>{
             }
             
         }
-        isDrawing = false;
-        stack = [];
     }
     
     if(d.currentTool === "eraser"){
@@ -61,8 +59,7 @@ socket.on('mouseup',(d)=>{
              ctx.fillStyle = "white";
              ctx.fillRect(d.stack[i].x,d.stack[i].y,30,30);
         }
-        isDrawing = false;
-        stack = [];
+
     }
 });
 
