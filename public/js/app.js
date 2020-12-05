@@ -17,7 +17,6 @@ var fillColor = "red";
 var isDrawing = false;
 var currentTool = "pencil";
 
-var isCanvasBlocked = false;
 
 //utility variables
 var stack = [];
@@ -77,10 +76,6 @@ function addActiveClassToATool(ele){
 
 // Canvas events
 canvas.addEventListener('mousedown',(e)=>{
-    if(isCanvasBlocked){
-        return;
-    }
-    socket.emit('blockCanvas');
     var canvasRect = canvas.getBoundingClientRect();
     var cx = canvasRect.x;
     var cy = canvasRect.y;
@@ -139,7 +134,7 @@ canvas.addEventListener('mousemove',(e)=>{
     var cy = canvasRect.y;
     var x = e.clientX-cx;
     var y = e.clientY-cy;
-    if(isDrawing && !isCanvasBlocked){
+    if(isDrawing){
         if(currentTool === "pencil"){
                 ctx.lineTo(x,y);
                 ctx.stroke();
@@ -156,7 +151,6 @@ canvas.addEventListener('mousemove',(e)=>{
 
 
 canvas.addEventListener('mouseup',(e)=>{
-    socket.emit('unblockCanvas');
     isDrawing = false;
     console.log(stack);
     socket.emit('mouseup',{stack,lineColor,fillColor,currentTool});
