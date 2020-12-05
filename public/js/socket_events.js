@@ -4,6 +4,16 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 });
 
 
+socket.on('blockCanvas', ()=>{
+    isCanvasBlocked = true;
+    document.getElementById('canvas-status').innerHTML = "Canvas blocked";
+});
+
+socket.on('unblockCanvas',()=>{
+    isCanvasBlocked = false;
+    document.getElementById('canvas-status').innerHTML = "Canvas unblocked";
+});
+
 socket.on("textChange",(val)=>{
     textArea.value = val;
 });
