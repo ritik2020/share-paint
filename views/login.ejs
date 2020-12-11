@@ -1,23 +1,36 @@
-<h1> Login </h1>
-<%- include ('./partials/messages') %>
-<form action="/users/login" method="POST">
-<div>
-<label for="email">Email</label>
-<input
-type="email"
-name="email"
-placeholder="Enter Email"
-/>
-</div>
-<div>
-    <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      placeholder="Enter Password"
-    />
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel='stylesheet' type='text/css' media='screen' href='/lrstyle.css'>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
   
-</div>
-<button type="submit" class="btn btn-primary btn-block">Login</button>
-   
-</form>
+  <form action="/users/login" method="POST">
+    <div class = "box"> 
+      <h1>Login</h1>
+      <%- include ('./partials/messages') %>
+      <form action="/users/login" method="POST">
+          
+          <p>E-Mail</p>
+          <input type="text" name="email" placeholder="Enter E-Mail">
+          <p>Password</p>
+          <input type="password" name="password" placeholder="Enter Password">
+          <input type="submit" name="" value="Login">
+          <div class="d-flex">
+          <input class ="border" type="checkbox" checked="checked"><p class="border">Remember Me</p><br>  
+          </div>
+          
+          <a href="#">Forgot Password</a>
+  
+      
+  
+      </form>       
+  </div>  
+    
+</body>
+</html>

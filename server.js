@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const socketEvents = require('./socket/socket_main').socketEvents(http);
+const path = require("path");
 
 const mongoose = require('mongoose');
 const router = express.Router();
@@ -17,8 +18,8 @@ app.set('view engine','ejs');
 app.use(expressEjsLayout);
 //BodyParser
 app.use(express.urlencoded({extended : false}));
-
-app.use(express.static("./public"));
+app.use(express.static(path.join(__dirname , "public")));
+console.log(path.join(__dirname,"public"));
 
 require('./config/passport')(passport)
 //mongoose
