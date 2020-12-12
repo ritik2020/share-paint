@@ -152,7 +152,6 @@ canvas.addEventListener('mousemove',(e)=>{
 
 canvas.addEventListener('mouseup',(e)=>{
     isDrawing = false;
-    console.log(stack);
     socket.emit('mouseup',{stack,lineColor,fillColor,currentTool});
     stack = [];
 });
