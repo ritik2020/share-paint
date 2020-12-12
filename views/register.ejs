@@ -1,28 +1,30 @@
 <html>
+
 <head>
-<title>Registration Page</title>
+    <title>Registration Page</title>
     <link rel="stylesheet" href="/lrstyle.css">
-</head>    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
 <body>
-    <div class = "box"> 
-        <h1>Register</h1>
-        <%- include ('./partials/messages') %>
-        <form action="/users/register" method="POST">
-            <p>Name</p>
-            <input type="text" name="name" placeholder="Enter Name">
-            <p>Email</p>
-            <input type="text" name="email" placeholder="Enter E-mail">
-            <p>Password</p>
-            <input type="password" name="password" placeholder="Enter Password">
-            <p>Confirm Password</p>
-            <input type="password" name="password2" placeholder="Confirm Password">
+    <div class="bg-info h-100 w-100">
+        <div class="box">
+            <h1>Register</h1>
+            <%- include ('./partials/messages') %>
+            <form action="/users/register" method="POST">
+                <p>Name</p>
+                <input type="text" name="name" placeholder="Enter Name">
+                <p>Email</p>
+                <input type="text" name="email" placeholder="Enter E-mail">
+                <p>Password</p>
+                <input type="password" name="password" placeholder="Enter Password">
+                <p>Confirm Password</p>
+                <input type="password" name="password2" placeholder="Confirm Password">
 
-            <input type="submit" name="" value="Register">
-            
-
-        
-
-        </form>       
+                <input type="submit" name="" value="Register">
+            </form>
+        </div>
     </div>
 </body>
+
 </html>
