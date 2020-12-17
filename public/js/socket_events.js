@@ -4,8 +4,11 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 });
 
 
-socket.on("textChange",(val)=>{
-    textArea.value = val;
+socket.on("message",(d)=>{
+    let ele = document.createElement("div");
+    ele.classList.add("message", "p-2", "border" ,"w-50" ,"round", "mb-2");
+    ele.innerText = d.msg + "("+ d.sentBy + ")";
+    chatroom.appendChild(ele);
 });
 
 socket.on('array',(d)=>{
@@ -34,7 +37,6 @@ socket.on('text',(d)=>{
 });
 
 socket.on('mouseup',(d)=>{
-    console.log(d);
     if(d.stack.length===0){return;}
     if(d.currentTool === "pencil"){
         ctx.lineWidth = lineWidth;

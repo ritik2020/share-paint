@@ -3,7 +3,7 @@ module.exports = function textBoxEvents(socket){
         socket.broadcast.emit('text',d);
       });
     
-      socket.on("textChange",(d)=>{
-        socket.broadcast.emit("textChange",d);
+      socket.on("message",(d)=>{
+        socket.broadcast.emit("message",d);
       });
 }

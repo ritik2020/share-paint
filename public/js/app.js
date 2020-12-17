@@ -6,8 +6,6 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1200;
 canvas.height = window.innerHeight;
 
-
-
 //formatting variables
 var lineWidth = "6";
 var lineColor = "red";
@@ -22,18 +20,18 @@ var currentTool = "pencil";
 var stack = [];
 
 //textarea
-var textArea = document.getElementById("textArea");
-var isTextAreaOpen = false;
+var chatroom = document.getElementById("chatroom");
+var messageToSent = document.getElementById("messageToSent");
+var isChatRoomOpen = false;
 
 function toggleChatroom(){
-    if(!isTextAreaOpen){
-        textArea.style.transform = "translateX(0)";
-        textArea.focus();
-        isTextAreaOpen = true;
+    if(!isChatRoomOpen){
+        chatroom.style.transform = "translateX(0)";
+        isChatRoomOpen = true;
     }
     else {
-        textArea.style.transform = "translateX(-100%)";
-        isTextAreaOpen = false;
+        chatroom.style.transform = "translateX(-100%)";
+        isChatRoomOpen = false;
     }
 }
  
@@ -169,8 +167,19 @@ canvas.addEventListener('mouseup',(e)=>{
 });
 
 
-textArea.addEventListener("input",()=>{
-socket.emit("textChange",textArea.value);
+messageToSent.addEventListener("keyup",(e)=>{
+    if(e.code === "Enter"){
+        let d = {msg: messageToSent.value, sentBy: document.getElementById("username").innerText};
+        messageToSent.value = "";
+        //create a new message element
+        let ele = document.createElement("div");
+        ele.classList.add("message", "p-2", "border" ,"w-50" ,"round", "mb-2");
+        ele.innerText = d.msg + "("+ d.sentBy + ")";
+        chatroom.appendChild(ele);
+
+        //emit to others
+        socket.emit('message', d);
+    }
 });
 
 
