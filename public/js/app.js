@@ -23,7 +23,19 @@ var stack = [];
 
 //textarea
 var textArea = document.getElementById("textArea");
+var isTextAreaOpen = false;
 
+function toggleChatroom(){
+    if(!isTextAreaOpen){
+        textArea.style.transform = "translateX(0)";
+        textArea.focus();
+        isTextAreaOpen = true;
+    }
+    else {
+        textArea.style.transform = "translateX(-100%)";
+        isTextAreaOpen = false;
+    }
+}
  
 function changeColor(color){
     lineColor = color;
