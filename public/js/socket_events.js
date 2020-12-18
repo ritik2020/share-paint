@@ -4,11 +4,17 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 });
 
 
-socket.on("message",(d)=>{
-    let ele = document.createElement("div");
-    ele.classList.add("message", "p-2", "border" ,"w-50" ,"round", "mb-2");
-    ele.innerText = d.msg + "("+ d.sentBy + ")";
-    chatroom.appendChild(ele);
+socket.on("message",(msgData)=>{
+
+    chats.innerHTML += 
+        `<div class="message">
+            <div class="user-name text-primary">${msgData.sentBy}</div>
+            <div class="msg">${msgData.msg}</div>
+            <div class="d-flex justify-content-between mt-1">
+                <div class="date text-secondary">${msgData.date}</div>
+                <div class="time text-secondary">${msgData.time}</div>
+            </div>
+        </div>`;
 });
 
 socket.on('array',(d)=>{

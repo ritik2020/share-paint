@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" defer></script>
     <script src="js/app.js" defer></script>
     <script src="js/socket_events.js" defer></script>
+    <script src="js/canvas.js" defer></script>
+    <script src="js/chatroom.js" defer></script>
     <script src="https://use.fontawesome.com/24889142f2.js" defer></script>
 
     
@@ -79,8 +81,20 @@
     </textarea> -->
 
     <div id="chatroom">
-        <div class="position-absolute w-100" style="bottom: 0px;">
-            <input id="messageToSent" type="text" class="w-100 border p-2" placeholder="Type your message here...">
+        <div id="chats">
+            <div class="message">
+                <div class="user-name text-primary">Ritik Kaushik</div>
+                <div class="msg">What are u doing bc??ghhghgjhghghj</div>
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="date text-secondary">18 Dec 2020</div>
+                    <div class="time text-secondary">11:28AM</div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="position-absolute w-100" style="bottom: 0px; height: 50px;">
+            <input id="messageToSent" type="text" class="w-100 border p-2 h-100" placeholder="Type your message here...">
         </div>
     </div>
 
