@@ -1,3 +1,4 @@
+var chatroom = document.getElementById("chatroom");
 var chats= document.getElementById("chats");
 var messageToSent = document.getElementById("messageToSent");
 var isChatRoomOpen = false;
