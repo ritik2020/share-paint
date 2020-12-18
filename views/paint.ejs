@@ -45,13 +45,11 @@
         <div class="tool p-2 m-1 pointer" onclick="changeTool('text'); addActiveClassToATool(this)">
             <i class="fa fa-text-width" aria-hidden="true"></i>
         </div>
+
+        <div class="func p-2 m-1 round shadow border pointer" style="background-color: white;" onclick="clearCanvas()">Clear canvas</div>
     </div> 
 
-    <div class="container d-flex justify-content-center flex-row">
-        <div class="func p-2 m-1 border border-secondary pointer" onclick="clearCanvas()">Clear canvas</div>
-    </div>
-
-    <div class="container d-flex justify-content-center flex-row">
+    <div class="container d-flex justify-content-center flex-row mb-1">
         <div class="color color-active pointer" 
             style="background-color: red; border-radius: 50%;" 
             onclick="changeColor('red'); addActiveClassToAColor(this)">
@@ -74,11 +72,9 @@
         </div>
     </div> 
 
-    <canvas id="canvas" class="border border-primary"></canvas>
+    <canvas id="canvas" class="shadow-lg"></canvas>
 
     
-    <!-- <textarea id="textArea" rows="30" class="p-2 border" placeholder="You can write any text here.">
-    </textarea> -->
 
     <div id="chatroom">
         <div id="chats">

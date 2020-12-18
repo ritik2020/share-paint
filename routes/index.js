@@ -9,9 +9,9 @@ router.get('/', (req,res)=>{
 router.get('/register', (req,res)=>{
     res.render('register');
 })
-router.get('/paint',ensureAuthenticated,(req,res)=>{
+router.get('/paint',(req,res)=>{
     res.render('paint',{
-        user: req.user
+        user: "dfd"
     });
 })
 module.exports = router; 

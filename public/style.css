@@ -4,6 +4,14 @@
     box-sizing: border-box;
 }
 
+body {
+    background-image: url("https://previews.123rf.com/images/1stchoice/1stchoice1607/1stchoice160700017/59848409-light-gray-background-with-soft-texture.jpg");
+}
+
+canvas {
+    background-color: white;
+}
+
 .color {
 width: 30px;
 height: 30px;
