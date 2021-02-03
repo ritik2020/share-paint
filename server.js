@@ -5,6 +5,7 @@ const http = require('http').createServer(app);
 const socketEvents = require('./socket/socket_main').socketEvents(http);
 const path = require("path");
 
+
 const mongoose = require('mongoose');
 const router = express.Router();
 const expressEjsLayout = require('express-ejs-layouts')
@@ -23,7 +24,7 @@ console.log(path.join(__dirname,"public"));
 
 require('./config/passport')(passport)
 //mongoose
-mongoose.connect('mongodb+srv://rohan:rohan123@share-paint.j1fni.mongodb.net/share-paint?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology : true})
+mongoose.connect('mongodb+srv://ritik:ritik123@cluster0.o2s5t.mongodb.net/<dbname>?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology : true})
 .then(() => console.log('connected,,'))
 .catch((err)=> console.log(err));
 
